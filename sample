@@ -1,4 +1,6 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -9,11 +11,11 @@ import resetPasswordScreen from './screens/resetPasswordScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const AppStack = createNativeStackNavigator();
 
 export default function App() {
-  
+
   //validation variable for firstLaunch for onboarding state
-  const Stack = createNativeStackNavigator();
   const [isFirstLaunch, setIsFirstLaunch] = React.useState(null);
 
   useEffect(() => {
@@ -33,12 +35,12 @@ export default function App() {
   }else if( isFirstLaunch === true){
     return (
       <NavigationContainer >
-      <Stack.Navigator initialRouteName="Onboarding">
-        <Stack.Screen options={{headerShown: false}} name="Onboarding" component={OnboardingScreen} />
-        <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
-        <Stack.Screen options={{headerShown: false}} name="resetPasswordScreen" component={resetPasswordScreen} />
-        <Stack.Screen options={{headerShown: false}} name="RegistrationScreen" component={RegistrationScreen} />
-      </Stack.Navigator>
+      <AppStack.Navigator initialRouteName="Onboarding">
+        <AppStack.Screen options={{headerShown: false}}  name="Onboarding" component={OnboardingScreen} />
+        <AppStack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
+        <AppStack.Screen options={{headerShown: false}} name="resetPasswordScreen" component={resetPasswordScreen} />
+        <AppStack.Screen options={{headerShown: false}} name="RegistrationScreen" component={RegistrationScreen} />
+      </AppStack.Navigator>
     </NavigationContainer>
     );
   }
