@@ -4,7 +4,7 @@ import FormButton from "../components/FormButton"
 import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
 import "firebase/compat/firestore"
-import { View, SafeAreaView, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Alert, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
 import { registration } from '../API/firebaseMethods';
 
@@ -28,7 +28,8 @@ const RegistrationScreen = ({ navigation }) => {
 
     const handlePress = () => {
         if (!email) {
-            Alert.alert('Email is required');
+            Alert.alert('Email is required',"Please enter Your Email");
+            
         } 
         else if (!fullName) {
             Alert.alert('Full name field is required.');
@@ -84,6 +85,7 @@ const RegistrationScreen = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
+                autoFocus = {true}
             />
             <FormInput
                 labelValue={fullName}

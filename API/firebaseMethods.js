@@ -21,13 +21,15 @@ export async function registration(email, password, fullName, age) {
   }
 }
 
-export async function signIn(email, password) {
+export async function signIn(email, password, navigation) {
   try {
    await firebase
       .auth()
       .signInWithEmailAndPassword(email, password);
+      navigation.navigate('HomeScreen');
   } catch (err) {
     Alert.alert("There is something wrong!", err.message);
+   
   }
 }
 

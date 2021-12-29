@@ -5,7 +5,7 @@ import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
 import "firebase/compat/firestore"
  
-import { View, SafeAreaView, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Alert, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
 import { signIn } from '../API/firebaseMethods';
 
@@ -23,11 +23,10 @@ const LoginScreen = ({ navigation }) => {
         }
     
         else{
-
-            signIn(email, password);
+            signIn(email, password, navigation);
             setEmail('');
             setPassword('');
-            navigation.navigate('HomeScreen');
+            
         }
       };
 
