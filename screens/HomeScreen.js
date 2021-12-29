@@ -1,60 +1,54 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
+import { loggingOut } from '../API/firebaseMethods';
 
-import { IconButton } from '../components';
-import Firebase from '../config/firebase';
-import { AuthenticatedUserContext } from '../navigation/AuthenticatedUserProvider';
 
-const auth = Firebase.auth();
+export default function HomeScreen({ navigation }) {
 
-export default function HomeScreen() {
-  const { user } = useContext(AuthenticatedUserContext);
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.log(error);
+  let currentUserUID = firebase.auth().currentUser.uid;
+  const [fullName, setfullName] = useState('');
+
+  useEffect(() => {
+    async function getUserInfo() {
+      let doc = await firebase
+        .firestore()
+        .collection('users')
+        .doc(currentUserUID)
+        .get();
+
+      if (!doc.exists) {
+        Alert.alert('No user data found!')
+      } else {
+        let dataObj = doc.data();
+        setfullName(dataObj.fullName)
+      }
     }
+    getUserInfo();
+  })
+
+  const handlePress = () => {
+    loggingOut();
+    navigation.navigate('Login');
   };
+
+
+
   return (
     <View style={styles.container}>
-      <StatusBar style='dark-content' />
-      <View style={styles.row}>
-        <Text style={styles.title}>Welcome {user.email}!</Text>
-        <IconButton
-          name='logout'
-          size={24}
-          color='#fff'
-          onPress={handleSignOut}
-        />
-      </View>
-      <Text style={styles.text}>Your UID is: {user.uid} </Text>
+      <Text style={styles.text}>Hi {fullName}</Text>
+      <Text style={styles.titleText}>Home  ne Screen</Text>
+      
+      <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <Text style={styles.buttonText}>Log Out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#e93b81',
-    paddingTop: 50,
-    paddingHorizontal: 12
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#fff'
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    color: '#fff'
-  }
+  
 });

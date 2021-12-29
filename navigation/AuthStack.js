@@ -8,6 +8,8 @@ import resetPasswordScreen from '../screens/resetPasswordScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import HomeScreen from '../screens/HomeScreen';
+
 const Stack = createNativeStackNavigator();
 
 export default function AuthStack() {
@@ -43,6 +45,7 @@ export default function AuthStack() {
       <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
       <Stack.Screen options={{ headerShown: false }} name="resetPasswordScreen" component={resetPasswordScreen} />
       <Stack.Screen options={{ headerShown: false }} name="RegistrationScreen" component={RegistrationScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
 
   );

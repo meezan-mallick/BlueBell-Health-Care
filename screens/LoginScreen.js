@@ -1,12 +1,35 @@
 import React, { useContext, useState } from "react";
 import FormInput from "../components/FormInput"
 import FormButton from "../components/FormButton"
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
+ 
 import { View, SafeAreaView, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
-const LoginScreen = ({ navigation }) => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+import { signIn } from '../API/firebaseMethods';
 
+const LoginScreen = ({ navigation }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handlePress = () => {
+        if (!email) {
+          Alert.alert('Email field is required.');
+        }
+    
+        else if (!password) {
+          Alert.alert('Password field is required.');
+        }
+    
+        else{
+
+            signIn(email, password);
+            setEmail('');
+            setPassword('');
+            navigation.navigate('HomeScreen');
+        }
+      };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -26,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
 
             <FormInput
                 labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                onChangeText={(email) => setEmail(email)}
                 placeholderText="Email"
                 iconType="user"
                 keyboardType="email-address"
@@ -36,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
 
             <FormInput
                 labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
+                onChangeText={(password) => setPassword(password)}
                 placeholderText="Password"
                 iconType="lock"
                 secureTextEntry={true}
@@ -48,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
 
             <FormButton
                 buttonTitle="Login"
-                onPress={() => login(email, password)}
+                onPress={handlePress}
             />
 
 
@@ -112,7 +135,7 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         color: '#000',
         fontWeight: "bold",
-        alignSelf:"flex-start"
+        alignSelf: "flex-start"
     },
     navButton: {
         marginTop: 15,
@@ -123,7 +146,7 @@ const styles = StyleSheet.create({
     },
     signButton: {
         marginVertical: 38,
-        
+
     },
     navButtonText: {
         fontSize: 14,

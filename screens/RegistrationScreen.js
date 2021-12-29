@@ -1,11 +1,63 @@
 import React, { useContext, useState } from "react";
 import FormInput from "../components/FormInput"
 import FormButton from "../components/FormButton"
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
 import { View, SafeAreaView, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
+import { registration } from '../API/firebaseMethods';
+
+
 const RegistrationScreen = ({ navigation }) => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+
+
+    const [email, setEmail] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [age, setAge] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const emptyState = () => {
+        setEmail('');
+        setFullName('');
+        setAge('');
+        setPassword('');
+        setConfirmPassword('');
+    };
+
+    const handlePress = () => {
+        if (!email) {
+            Alert.alert('Email is required');
+        } 
+        else if (!fullName) {
+            Alert.alert('Full name field is required.');
+        } 
+        else if (!age) {
+            Alert.alert('Age field is required.');
+        } 
+        else if (!password) {
+            setPassword('');
+            Alert.alert('Password field is required.');
+        } 
+        else if (!confirmPassword) {
+            setConfirmPassword('');
+            Alert.alert('Confirm password field is required.');
+        } 
+        else if (password !== confirmPassword) {
+            Alert.alert('Password does not match!');
+        } 
+        else {
+            registration(
+                email,
+                password,
+                fullName,
+                age,
+            );
+            navigation.navigate('HomeScreen');
+            emptyState();
+        }
+    };
 
 
     return (
@@ -26,7 +78,7 @@ const RegistrationScreen = ({ navigation }) => {
 
             <FormInput
                 labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                onChangeText={(email) => setEmail(email)}
                 placeholderText="Email"
                 iconType="user"
                 keyboardType="email-address"
@@ -34,8 +86,8 @@ const RegistrationScreen = ({ navigation }) => {
                 autoCorrect={false}
             />
             <FormInput
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                labelValue={fullName}
+                onChangeText={(name) => setFullName(name)}
                 placeholderText="Full Name"
                 iconType="user"
                 keyboardType="email-address"
@@ -43,8 +95,8 @@ const RegistrationScreen = ({ navigation }) => {
                 autoCorrect={false}
             />
             <FormInput
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                labelValue={age}
+                onChangeText={(age) => setAge(age)}
                 placeholderText="Age"
                 iconType="user"
                 keyboardType="email-address"
@@ -52,18 +104,16 @@ const RegistrationScreen = ({ navigation }) => {
                 autoCorrect={false}
             />
             <FormInput
-                labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                labelValue={password}
+                onChangeText={(password) => setPassword(password)}
                 placeholderText="Password"
-                iconType="user"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
+                iconType="lock"
+                secureTextEntry={true}
             />
 
             <FormInput
-                labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
+                labelValue={confirmPassword}
+                onChangeText={(password2) => setConfirmPassword(password2)}
                 placeholderText="Confirm Password"
                 iconType="lock"
                 secureTextEntry={true}
@@ -71,30 +121,10 @@ const RegistrationScreen = ({ navigation }) => {
 
             <FormButton
                 buttonTitle="Login"
-                onPress={() => login(email, password)}
+                onPress={handlePress}
             />
 
 
-
-            {/* {Platform.OS === 'android' ? (
-        <View>
-          <SocialButton
-            buttonTitle="Sign In with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            onPress={() => fbLogin()}
-          />
-
-          <SocialButton
-            buttonTitle="Sign In with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            onPress={() => googleLogin()}
-          />
-        </View>
-      ) : null} */}
 
             <TouchableOpacity
                 style={styles.signButton}
@@ -126,7 +156,7 @@ const styles = StyleSheet.create({
     },
     illustration: {
         height: 168,
-        width:176,
+        width: 176,
         marginTop: 0,
         resizeMode: 'cover',
     },
@@ -135,7 +165,7 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         color: '#000',
         fontWeight: "bold",
-        alignSelf:"flex-start"
+        alignSelf: "flex-start"
     },
     navButton: {
         marginTop: 15,
@@ -146,7 +176,7 @@ const styles = StyleSheet.create({
     },
     signButton: {
         marginVertical: 38,
-        
+
     },
     navButtonText: {
         fontSize: 14,
