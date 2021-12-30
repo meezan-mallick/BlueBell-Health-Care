@@ -7,9 +7,15 @@ import "firebase/compat/firestore"
  
 import { Image, Alert, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
-import { signIn } from '../API/firebaseMethods';
+// import { signIn } from '../API/firebaseMethods';
+
+import { AuthContext } from "../navigation/AuthProvider";
+
 
 const LoginScreen = ({ navigation }) => {
+
+    const {login} = useContext(AuthContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -23,7 +29,7 @@ const LoginScreen = ({ navigation }) => {
         }
     
         else{
-            signIn(email, password, navigation);
+            login(email, password);
             setEmail('');
             setPassword('');
             
@@ -73,27 +79,6 @@ const LoginScreen = ({ navigation }) => {
                 onPress={handlePress}
             />
 
-
-
-            {/* {Platform.OS === 'android' ? (
-        <View>
-          <SocialButton
-            buttonTitle="Sign In with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            onPress={() => fbLogin()}
-          />
-
-          <SocialButton
-            buttonTitle="Sign In with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            onPress={() => googleLogin()}
-          />
-        </View>
-      ) : null} */}
 
             <TouchableOpacity
                 style={styles.signButton}

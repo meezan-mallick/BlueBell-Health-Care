@@ -6,11 +6,13 @@ import "firebase/compat/auth"
 import "firebase/compat/firestore"
 import { View, Alert, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 
-import { registration } from '../API/firebaseMethods';
+// import { registration } from '../API/firebaseMethods';
 
+import { AuthContext } from "../navigation/AuthProvider";
 
 const RegistrationScreen = ({ navigation }) => {
 
+    const {register} = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
@@ -49,13 +51,13 @@ const RegistrationScreen = ({ navigation }) => {
             Alert.alert('Password does not match!');
         } 
         else {
-            registration(
+            register(
                 email,
                 password,
                 fullName,
                 age,
             );
-            navigation.navigate('HomeScreen');
+            // navigation.navigate('HomeScreen');
             emptyState();
         }
     };
