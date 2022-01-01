@@ -1,12 +1,40 @@
 import React, { useContext, useState } from "react";
 import FormInput from "../components/FormInput"
 import FormButton from "../components/FormButton"
-import { View, SafeAreaView, Image, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
+ 
+import { Image, Alert, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+
+// import { signIn } from '../API/firebaseMethods';
+
+import { AuthContext } from "../navigation/AuthProvider";
+
 
 const LoginScreen = ({ navigation }) => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
 
+    const {login} = useContext(AuthContext);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handlePress = () => {
+        if (!email) {
+          Alert.alert('Email field is required.');
+        }
+    
+        else if (!password) {
+          Alert.alert('Password field is required.');
+        }
+    
+        else{
+            login(email, password);
+            setEmail('');
+            setPassword('');
+            
+        }
+      };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -26,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
 
             <FormInput
                 labelValue={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                onChangeText={(email) => setEmail(email)}
                 placeholderText="Email"
                 iconType="user"
                 keyboardType="email-address"
@@ -36,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
 
             <FormInput
                 labelValue={password}
-                onChangeText={(userPassword) => setPassword(userPassword)}
+                onChangeText={(password) => setPassword(password)}
                 placeholderText="Password"
                 iconType="lock"
                 secureTextEntry={true}
@@ -48,30 +76,9 @@ const LoginScreen = ({ navigation }) => {
 
             <FormButton
                 buttonTitle="Login"
-                onPress={() => login(email, password)}
+                onPress={handlePress}
             />
 
-
-
-            {/* {Platform.OS === 'android' ? (
-        <View>
-          <SocialButton
-            buttonTitle="Sign In with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            onPress={() => fbLogin()}
-          />
-
-          <SocialButton
-            buttonTitle="Sign In with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            onPress={() => googleLogin()}
-          />
-        </View>
-      ) : null} */}
 
             <TouchableOpacity
                 style={styles.signButton}
@@ -112,7 +119,7 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         color: '#000',
         fontWeight: "bold",
-        alignSelf:"flex-start"
+        alignSelf: "flex-start"
     },
     navButton: {
         marginTop: 15,
@@ -123,7 +130,7 @@ const styles = StyleSheet.create({
     },
     signButton: {
         marginVertical: 38,
-        
+
     },
     navButtonText: {
         fontSize: 14,
