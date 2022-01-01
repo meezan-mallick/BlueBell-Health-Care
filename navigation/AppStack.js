@@ -5,37 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import HomeScreen1 from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
+import ActivityScreen from '../screens/ActivityScreen';
+import EventsScreen from '../screens/EventsScreen';
+import BlogScreen from '../screens/BlogScreen';
 
-function HomeScreen() {
-    return (
-      <HomeScreen1/>
-    );
-  }
-  
-  function ActivityScreen() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Activity!</Text>
-      </View>
-    );
-  }
-  
-  function EventsScreen() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Events!</Text>
-      </View>
-    );
-  }
-  
-  function BlogScreen() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Blog!</Text>
-      </View>
-    );
-  }
+
   
   const Tab = createBottomTabNavigator();
 
