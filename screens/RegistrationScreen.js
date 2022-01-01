@@ -124,7 +124,7 @@ const RegistrationScreen = ({ navigation }) => {
             />
 
             <FormButton
-                buttonTitle="Login"
+                buttonTitle="Register"
                 onPress={handlePress}
             />
 
